@@ -6,6 +6,7 @@ using Avalonia.Input;
 using MediaPlayer.Controls;
 using MediaPlayer.Controls.Backends;
 using MediaPlayer.Controls.Workflows;
+using NativeMenuItemToggleType = Avalonia.Controls.MenuItemToggleType;
 
 namespace MediaPlayer.Demo;
 
@@ -729,7 +730,7 @@ internal sealed class MainWindowNativeMenuCoordinator
         KeyGesture? gesture,
         EventHandler onClick,
         bool enabled = true,
-        NativeMenuItemToggleType toggleType = NativeMenuItemToggleType.None)
+        MenuItemToggleType toggleType = MenuItemToggleType.None)
     {
         var item = new NativeMenuItem(header)
         {

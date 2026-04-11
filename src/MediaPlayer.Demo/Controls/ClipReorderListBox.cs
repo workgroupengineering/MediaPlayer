@@ -21,6 +21,7 @@ public sealed class ClipReorderListBox : ListBox
     private Point _dragStartPoint;
     private int _dragSourceIndex = -1;
     private bool _dragInProgress;
+    private PointerPressedEventArgs? _dragStartEventArgs;
 
     public ClipReorderListBox()
     {
@@ -41,17 +42,20 @@ public sealed class ClipReorderListBox : ListBox
         if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
             _dragSourceIndex = -1;
+            _dragStartEventArgs = null;
             return;
         }
 
         _dragStartPoint = e.GetPosition(this);
         _dragSourceIndex = GetIndexFromEventSource(e.Source);
+        _dragStartEventArgs = e;
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
         base.OnPointerReleased(e);
         _dragSourceIndex = -1;
+        _dragStartEventArgs = null;
     }
 
     protected override void OnPointerMoved(PointerEventArgs e)
@@ -65,6 +69,7 @@ public sealed class ClipReorderListBox : ListBox
         if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
             _dragSourceIndex = -1;
+            _dragStartEventArgs = null;
             return;
         }
 
@@ -75,10 +80,17 @@ public sealed class ClipReorderListBox : ListBox
         }
 
         _dragInProgress = true;
-        BeginDrag(e);
+        if (_dragStartEventArgs is null)
+        {
+            _dragInProgress = false;
+            _dragSourceIndex = -1;
+            return;
+        }
+
+        BeginDrag(_dragStartEventArgs);
     }
 
-    private async void BeginDrag(PointerEventArgs triggerEvent)
+    private async void BeginDrag(PointerPressedEventArgs triggerEvent)
     {
         try
         {
@@ -94,6 +106,7 @@ public sealed class ClipReorderListBox : ListBox
         {
             _dragInProgress = false;
             _dragSourceIndex = -1;
+            _dragStartEventArgs = null;
         }
     }
 
