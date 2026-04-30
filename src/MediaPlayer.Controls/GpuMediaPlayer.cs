@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Threading;
@@ -536,7 +537,7 @@ public sealed class GpuMediaPlayer : OpenGlControlBase, IDisposable
             return;
         }
 
-        var scale = VisualRoot?.RenderScaling ?? 1d;
+        var scale = TopLevel.GetTopLevel(this)?.RenderScaling ?? 1d;
         var pixelWidth = Math.Max(1, (int)(Bounds.Width * scale));
         var pixelHeight = Math.Max(1, (int)(Bounds.Height * scale));
 

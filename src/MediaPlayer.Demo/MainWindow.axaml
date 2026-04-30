@@ -14,7 +14,7 @@
         MinHeight="260"
         Background="#000000"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="PreferSystemChrome"
+        WindowDecorations="Full"
         ExtendClientAreaTitleBarHeightHint="42"
         KeyDown="OnWindowKeyDown"
         Title="Media Player Pro">

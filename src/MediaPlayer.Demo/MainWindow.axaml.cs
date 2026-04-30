@@ -47,7 +47,7 @@ public partial class MainWindow : Window
     private readonly IMediaWorkflowService _mediaWorkflowService;
     private readonly IMediaWorkflowProviderDiagnostics _workflowProviderDiagnostics;
     private readonly PlaybackShortcutCommandService _playbackShortcutCommandService = new();
-    private ExtendClientAreaChromeHints _defaultChromeHints;
+    private WindowDecorations _defaultWindowDecorations;
     private DateTime _lastOverlayInteractionUtc = DateTime.UtcNow;
     private int _lastFittedVideoWidth;
     private int _lastFittedVideoHeight;
@@ -107,7 +107,7 @@ public partial class MainWindow : Window
             handledEventsToo: true);
 
         DataContext = viewModel;
-        _defaultChromeHints = ExtendClientAreaChromeHints;
+        _defaultWindowDecorations = WindowDecorations;
 
         _statusTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(120), DispatcherPriority.Background, (_, _) => UpdateStatus());
         _overlayIdleTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(150), DispatcherPriority.Background, (_, _) => HideOverlayOnIdle());
@@ -604,13 +604,13 @@ public partial class MainWindow : Window
             return;
         }
 
-        var targetHints = hudVisible
-            ? _defaultChromeHints
-            : ExtendClientAreaChromeHints.NoChrome;
+        var targetDecorations = hudVisible
+            ? _defaultWindowDecorations
+            : WindowDecorations.None;
 
-        if (ExtendClientAreaChromeHints != targetHints)
+        if (WindowDecorations != targetDecorations)
         {
-            ExtendClientAreaChromeHints = targetHints;
+            WindowDecorations = targetDecorations;
         }
     }
 
@@ -2532,7 +2532,7 @@ public partial class MainWindow : Window
         var input = new TextBox
         {
             Text = initialText,
-            Watermark = watermark,
+            PlaceholderText = watermark,
             MinWidth = 420
         };
 
